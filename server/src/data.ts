@@ -5,13 +5,13 @@ export type Artifact = { id: string; room: string; title: string; era: string; t
 export type QuizQuestion = { id: string; question: string; options: string[]; answer: number; explanation: string; sourceId: string };
 
 const imgs = {
-  day: '/assets/day.png',
-  night: '/assets/night.png',
-  facade: '/assets/facade.png',
-  museum: '/assets/museum.png',
-  altar: '/assets/altar.png',
+  day: '/assets/day.jpg',
+  night: '/assets/night.jpg',
+  facade: '/assets/facade.jpg',
+  museum: '/assets/museum.jpg',
+  altar: '/assets/altar.jpg',
   ship: '/assets/ship.jpg',
-  tours: '/assets/tours.jpg',
+  tours: '/assets/versailles.jpg',
   saigon_port: '/assets/saigon_port.jpg',
   marseille_port: '/assets/marseille_port.jpg',
   pacbo: '/assets/pacbo.jpg',

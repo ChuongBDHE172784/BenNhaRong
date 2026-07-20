@@ -1452,7 +1452,7 @@ footer > small {
 .architecture-art {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(13, 31, 35, 0.48) 0%, rgba(13, 31, 35, 0.76) 72%, #09171a 100%), url('/assets/facade.png') center/cover no-repeat;
+  background: linear-gradient(to bottom, rgba(13, 31, 35, 0.48) 0%, rgba(13, 31, 35, 0.76) 72%, #09171a 100%), url('/assets/facade.jpg') center/cover no-repeat;
 }
 .architecture-art .arch-roof,
 .architecture-art .arch-body,
@@ -2099,7 +2099,7 @@ footer > small {
 }
 .find-scene {
   height: 460px;
-  background: linear-gradient(to bottom, rgba(16, 44, 50, 0.48) 0%, rgba(20, 54, 61, 0.76) 72%, #0d2226 100%), url('/assets/facade.png') center/cover no-repeat;
+  background: linear-gradient(to bottom, rgba(16, 44, 50, 0.48) 0%, rgba(20, 54, 61, 0.76) 72%, #0d2226 100%), url('/assets/facade.jpg') center/cover no-repeat;
   position: relative;
   overflow: hidden;
 }
