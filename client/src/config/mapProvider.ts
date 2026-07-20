@@ -8,22 +8,22 @@ export interface MapProviderConfig {
   documentationUrl: string;
 }
 
-export const vietmapProvider: MapProviderConfig = {
-  name: 'VIETMAP',
-  styleUrl: 'https://maps.vietmap.vn/maps/styles/dm/style.json',
-  attribution: 'Bản đồ © VIETMAP',
+export const trackAsiaProvider: MapProviderConfig = {
+  name: 'TrackAsia',
+  styleUrl: 'https://maps.track-asia.com/styles/v2/streets.json',
+  attribution: 'Bản đồ © TrackAsia',
   apiKeyRequired: true,
   minZoom: 0,
   maxZoom: 22,
-  documentationUrl: 'https://maps.vietmap.vn/docs/map-api/tilemap/'
+  documentationUrl: 'https://docs.track-asia.com/guides/'
 };
 
 export function readMapApiKey(): string {
-  return (import.meta.env.VITE_MAP_API_KEY ?? '').trim();
+  return (import.meta.env.VITE_TRACKASIA_API_KEY ?? '').trim();
 }
 
-export function createVietmapStyleUrl(apiKey: string): string {
+export function createTrackAsiaStyleUrl(apiKey: string): string {
   const key = apiKey.trim();
-  if (!key) throw new Error('Thiếu VITE_MAP_API_KEY');
-  return `${vietmapProvider.styleUrl}?apikey=${encodeURIComponent(key)}`;
+  if (!key) throw new Error('Thiếu VITE_TRACKASIA_API_KEY');
+  return `${trackAsiaProvider.styleUrl}?key=${encodeURIComponent(key)}`;
 }

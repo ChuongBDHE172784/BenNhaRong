@@ -1,9 +1,9 @@
-import * as vietmapgl from '@vietmap/vietmap-gl-js/dist/vietmap-gl';
-import '@vietmap/vietmap-gl-js/dist/vietmap-gl.css';
+import * as trackasiagl from 'trackasia-gl';
+import 'trackasia-gl/dist/trackasia-gl.css';
 import { LocateFixed, Route, Ship, TriangleAlert } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { JourneyStop } from '../../types';
-import { createVietmapStyleUrl, vietmapProvider } from '../../config/mapProvider';
+import { createTrackAsiaStyleUrl, trackAsiaProvider } from '../../config/mapProvider';
 import { vietnamViewBounds } from '../../data/vietnamSovereigntyLocations';
 import { createVietnamSovereigntyLayer } from './VietnamSovereigntyLayer';
 import './InteractiveJourneyMap.css';
@@ -16,7 +16,7 @@ type Props = {
   onSelect: (index: number) => void;
 };
 
-type MarkerRecord = { id: string; marker: vietmapgl.Marker; element: HTMLButtonElement };
+type MarkerRecord = { id: string; marker: trackasiagl.Marker; element: HTMLButtonElement };
 
 const routeSourceId = 'journey-route-source';
 const routeLayerId = 'journey-route-line';
@@ -35,12 +35,12 @@ function routeData(coordinates: [number, number][]) {
   };
 }
 
-function fitJourney(map: vietmapgl.Map, stops: JourneyStop[], reducedMotion: boolean) {
+function fitJourney(map: trackasiagl.Map, stops: JourneyStop[], reducedMotion: boolean) {
   const coordinates = coordinatesFor(stops);
   if (!coordinates.length) return;
   const bounds = coordinates.slice(1).reduce(
     (current, point) => current.extend(point),
-    new vietmapgl.LngLatBounds(coordinates[0], coordinates[0])
+    new trackasiagl.LngLatBounds(coordinates[0], coordinates[0])
   );
   map.fitBounds(bounds, { padding: 72, maxZoom: 4.4, duration: reducedMotion ? 0 : 1100 });
 }
@@ -56,17 +56,17 @@ function createJourneyMarker(stop: JourneyStop, index: number, onSelect: (index:
   button.addEventListener('click', () => onSelect(index));
   return {
     element: button,
-    marker: new vietmapgl.Marker({ element: button, anchor: 'center' })
+    marker: new trackasiagl.Marker({ element: button, anchor: 'center' })
       .setLngLat([stop.coordinates[1], stop.coordinates[0]])
   };
 }
 
 export default function InteractiveJourneyMap({ stops, activeId, visitedIds, apiKey, onSelect }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<vietmapgl.Map | null>(null);
+  const mapRef = useRef<trackasiagl.Map | null>(null);
   const onSelectRef = useRef(onSelect);
   const markerRecordsRef = useRef<MarkerRecord[]>([]);
-  const shipRef = useRef<vietmapgl.Marker | null>(null);
+  const shipRef = useRef<trackasiagl.Marker | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -79,24 +79,24 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
   useEffect(() => {
     if (!containerRef.current || !apiKey || stops.length === 0) return;
 
-    const map = new vietmapgl.Map({
+    const map = new trackasiagl.Map({
       container: containerRef.current,
-      style: createVietmapStyleUrl(apiKey),
+      style: createTrackAsiaStyleUrl(apiKey),
       center: [52, 24],
       zoom: 2,
-      minZoom: vietmapProvider.minZoom,
-      maxZoom: vietmapProvider.maxZoom,
-      attributionControl: { compact: true, customAttribution: vietmapProvider.attribution },
+      minZoom: trackAsiaProvider.minZoom,
+      maxZoom: trackAsiaProvider.maxZoom,
+      attributionControl: { compact: true, customAttribution: trackAsiaProvider.attribution },
       dragRotate: false,
       pitchWithRotate: false
     });
     mapRef.current = map;
-    map.addControl(new vietmapgl.NavigationControl({ showCompass: false, showZoom: true }), 'top-right');
+    map.addControl(new trackasiagl.NavigationControl({ showCompass: false, showZoom: true }), 'top-right');
 
     let removeSovereigntyLayer: () => void = () => undefined;
     const handleError = () => {
       setLoading(false);
-      setError('Không thể tải bản đồ VIETMAP. Hãy kiểm tra API key, giới hạn tên miền và kết nối mạng.');
+      setError('Không thể tải bản đồ TrackAsia. Hãy kiểm tra API key, giới hạn tên miền và kết nối mạng.');
     };
 
     map.on('error', handleError);
@@ -132,14 +132,14 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
       shipElement.className = 'journey-ship-marker';
       shipElement.setAttribute('aria-label', 'Vị trí con tàu trên hành trình');
       shipElement.innerHTML = '<span aria-hidden="true">⚓</span>';
-      shipRef.current = new vietmapgl.Marker({ element: shipElement, anchor: 'center' })
+      shipRef.current = new trackasiagl.Marker({ element: shipElement, anchor: 'center' })
         .setLngLat(fullRoute[0])
         .addTo(map);
 
       fitJourney(map, stops, reducedMotion);
 
       if (reducedMotion) return;
-      const source = map.getSource(routeSourceId) as vietmapgl.GeoJSONSource;
+      const source = map.getSource(routeSourceId) as trackasiagl.GeoJSONSource;
       const segmentDuration = 900;
       const startedAt = performance.now();
       const drawRoute = (now: number) => {
@@ -194,7 +194,7 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
     <section className="interactive-map-shell" aria-label="Bản đồ tương tác hành trình lịch sử" data-reduced-motion={reducedMotion ? 'true' : 'false'}>
       <div className="interactive-map-stage">
         <div ref={containerRef} className="interactive-map-canvas" data-testid="interactive-journey-map"/>
-        {loading && <div className="journey-map-status" role="status"><span className="map-loader"/>Đang tải bản đồ VIETMAP…</div>}
+        {loading && <div className="journey-map-status" role="status"><span className="map-loader"/>Đang tải bản đồ TrackAsia…</div>}
         {error && <div className="journey-map-error" role="alert"><TriangleAlert/><span>{error}</span></div>}
         <div className="journey-map-actions" aria-label="Điều khiển góc nhìn bản đồ">
           <button type="button" onClick={() => mapRef.current && fitJourney(mapRef.current, stops, reducedMotion)}><Route/>Xem toàn bộ hành trình</button>

@@ -32,21 +32,21 @@
   min-width: 0;
 }
 
-.interactive-map-canvas .vietmapgl-canvas {
+.interactive-map-canvas .trackasiagl-canvas {
   outline: none;
 }
 
-.interactive-map-canvas .vietmapgl-canvas:focus-visible {
+.interactive-map-canvas .trackasiagl-canvas:focus-visible {
   outline: 3px solid #efd28f;
   outline-offset: -4px;
 }
 
-.interactive-map-canvas .vietmapgl-ctrl-top-right {
+.interactive-map-canvas .trackasiagl-ctrl-top-right {
   top: 78px;
   right: 10px;
 }
 
-.interactive-map-canvas .vietmapgl-ctrl-group {
+.interactive-map-canvas .trackasiagl-ctrl-group {
   overflow: hidden;
   border: 1px solid rgba(220, 183, 108, 0.55);
   border-radius: 3px;
@@ -54,17 +54,17 @@
   background: #f0e2c6;
 }
 
-.interactive-map-canvas .vietmapgl-ctrl-group button {
+.interactive-map-canvas .trackasiagl-ctrl-group button {
   width: 38px;
   height: 38px;
 }
 
-.interactive-map-canvas .vietmapgl-ctrl-attrib {
+.interactive-map-canvas .trackasiagl-ctrl-attrib {
   color: #183238;
   background: rgba(244, 235, 215, 0.92);
 }
 
-.interactive-map-canvas .vietmapgl-ctrl-attrib a {
+.interactive-map-canvas .trackasiagl-ctrl-attrib a {
   color: #7a302e;
 }
 
@@ -279,7 +279,7 @@
   outline: 2px solid #f0cd85;
 }
 
-.interactive-map-canvas .journey-map-popup .vietmapgl-popup-content {
+.interactive-map-canvas .journey-map-popup .trackasiagl-popup-content {
   border: 1px solid #b9874c;
   border-radius: 3px;
   background: #efe2c6;
@@ -287,11 +287,11 @@
   box-shadow: 0 16px 35px rgba(2, 13, 16, 0.46);
 }
 
-.interactive-map-canvas .vietmapgl-popup-anchor-bottom .vietmapgl-popup-tip {
+.interactive-map-canvas .trackasiagl-popup-anchor-bottom .trackasiagl-popup-tip {
   border-top-color: #efe2c6;
 }
 
-.interactive-map-canvas .vietmapgl-popup-close-button {
+.interactive-map-canvas .trackasiagl-popup-close-button {
   width: 34px;
   height: 34px;
   color: #6d2827;
@@ -338,7 +338,7 @@
   .interactive-map-stage { min-height: 410px; }
   .journey-map-actions { top: 12px; left: 12px; max-width: calc(100% - 68px); }
   .journey-map-actions button { min-height: 40px; padding: 8px 10px; font-size: 9px; }
-  .interactive-map-canvas .vietmapgl-ctrl-top-right { top: 62px; }
+  .interactive-map-canvas .trackasiagl-ctrl-top-right { top: 62px; }
   .sovereignty-marker { min-width: 156px; min-height: 52px; }
   .sovereignty-marker__label strong { font-size: 9px; }
 }
@@ -347,7 +347,7 @@
   .journey-map-actions { right: 54px; max-width: none; }
   .journey-map-actions button { flex: 1 1 130px; justify-content: center; }
   .interactive-sovereignty-note { padding: 9px 10px; font-size: 10px; }
-  .interactive-map-canvas .vietmapgl-ctrl-attrib { max-width: calc(100vw - 20px); font-size: 9px; }
+  .interactive-map-canvas .trackasiagl-ctrl-attrib { max-width: calc(100vw - 20px); font-size: 9px; }
   .journey-map-error { inset: auto 8px 8px; padding: 12px; font-size: 10px; }
 }
 

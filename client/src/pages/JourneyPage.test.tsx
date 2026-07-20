@@ -8,7 +8,7 @@ import JourneyPage from './JourneyPage';
 import { ProgressProvider } from '../context/ProgressContext';
 import type { JourneyStop } from '../types';
 
-vi.mock('@vietmap/vietmap-gl-js/dist/vietmap-gl', () => {
+vi.mock('trackasia-gl', () => {
   class MockBounds {
     extend() { return this; }
   }
@@ -116,7 +116,7 @@ function renderJourney() {
   return render(<ProgressProvider><JourneyPage/></ProgressProvider>);
 }
 
-describe('bản đồ hành trình VIETMAP', () => {
+describe('bản đồ hành trình TrackAsia', () => {
   beforeEach(() => {
     localStorage.clear();
     Object.defineProperty(window, 'matchMedia', { writable: true, value: vi.fn().mockImplementation(matchMediaMock(false)) });
@@ -135,7 +135,7 @@ describe('bản đồ hành trình VIETMAP', () => {
   });
 
   it('render bản đồ tương tác với đủ marker, lớp chủ quyền và hai control', async () => {
-    vi.stubEnv('VITE_MAP_API_KEY', 'test-key');
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'test-key');
     renderJourney();
 
     expect(await screen.findByTestId('interactive-journey-map')).toBeInTheDocument();
@@ -148,14 +148,14 @@ describe('bản đồ hành trình VIETMAP', () => {
   });
 
   it('mở popup chủ quyền bằng click', async () => {
-    vi.stubEnv('VITE_MAP_API_KEY', 'test-key');
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'test-key');
     renderJourney();
     fireEvent.click(await screen.findByRole('button', { name: 'Quần đảo Hoàng Sa, Việt Nam. Mở thông tin' }));
     expect(screen.getByText('Quần đảo Hoàng Sa là bộ phận không thể tách rời của lãnh thổ Việt Nam.')).toBeInTheDocument();
   });
 
   it('click marker cập nhật panel và tiến độ hộ chiếu', async () => {
-    vi.stubEnv('VITE_MAP_API_KEY', 'test-key');
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'test-key');
     renderJourney();
     fireEvent.click(await screen.findByRole('button', { name: 'Mở địa điểm Singapore' }));
     expect(screen.getByRole('heading', { name: 'Singapore' })).toBeInTheDocument();
@@ -163,7 +163,7 @@ describe('bản đồ hành trình VIETMAP', () => {
   });
 
   it('tắt animation phức tạp khi người dùng yêu cầu giảm chuyển động', async () => {
-    vi.stubEnv('VITE_MAP_API_KEY', 'test-key');
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'test-key');
     Object.defineProperty(window, 'matchMedia', { writable: true, value: vi.fn().mockImplementation(matchMediaMock(true)) });
     renderJourney();
     const map = await screen.findByLabelText('Bản đồ tương tác hành trình lịch sử');
@@ -172,7 +172,7 @@ describe('bản đồ hành trình VIETMAP', () => {
   });
 
   it('thiếu API key hiển thị hướng dẫn và chỉ dùng fallback SVG nội bộ', async () => {
-    vi.stubEnv('VITE_MAP_API_KEY', '');
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', '');
     renderJourney();
     expect(await screen.findByText('Bản đồ tương tác chưa được cấu hình.')).toBeInTheDocument();
     expect(screen.getByTestId('sovereignty-map')).toBeInTheDocument();
@@ -182,9 +182,9 @@ describe('bản đồ hành trình VIETMAP', () => {
   });
 
   it('API key sai hiển thị error state và không đổi provider', async () => {
-    vi.stubEnv('VITE_MAP_API_KEY', 'invalid-ui-key');
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'invalid-ui-key');
     renderJourney();
-    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể tải bản đồ VIETMAP');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể tải bản đồ TrackAsia');
     expect(screen.getByTestId('interactive-journey-map')).toBeInTheDocument();
     expect(screen.queryByTestId('sovereignty-map')).not.toBeInTheDocument();
   });

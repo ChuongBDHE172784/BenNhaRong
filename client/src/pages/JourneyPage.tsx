@@ -42,7 +42,7 @@ export default function JourneyPage() {
           <div className="map-configuration-fallback">
             <div className="map-configuration-notice" role="alert">
               <strong>Bản đồ tương tác chưa được cấu hình.</strong>
-              <span>Thêm <code>VITE_MAP_API_KEY</code> vào <code>client/.env</code> rồi khởi động lại Vite. Website không tự chuyển sang nguồn bản đồ khác.</span>
+              <span>Thêm <code>VITE_TRACKASIA_API_KEY</code> vào <code>client/.env</code> rồi khởi động lại Vite. Website không tự chuyển sang nguồn bản đồ khác.</span>
             </div>
             <VietnamSovereigntyMap stops={data} activeId={stop?.id ?? data[0]!.id} visitedIds={progress.journeyStops} onSelect={select}/>
           </div>

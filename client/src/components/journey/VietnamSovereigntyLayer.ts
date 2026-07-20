@@ -1,7 +1,7 @@
-import * as vietmapgl from '@vietmap/vietmap-gl-js/dist/vietmap-gl';
+import * as trackasiagl from 'trackasia-gl';
 import { vietnamSovereigntyLocations } from '../../data/vietnamSovereigntyLocations';
 
-export function createVietnamSovereigntyLayer(map: vietmapgl.Map): () => void {
+export function createVietnamSovereigntyLayer(map: trackasiagl.Map): () => void {
   const markers = vietnamSovereigntyLocations.map((location) => {
     const button = document.createElement('button');
     button.type = 'button';
@@ -33,7 +33,7 @@ export function createVietnamSovereigntyLayer(map: vietmapgl.Map): () => void {
     description.textContent = location.description;
     popupContent.append(title, nation, description);
 
-    const popup = new vietmapgl.Popup({
+    const popup = new trackasiagl.Popup({
       className: 'journey-map-popup',
       closeButton: true,
       closeOnClick: false,
@@ -41,7 +41,7 @@ export function createVietnamSovereigntyLayer(map: vietmapgl.Map): () => void {
       offset: 24
     }).setDOMContent(popupContent);
 
-    const marker = new vietmapgl.Marker({ element: button, anchor: 'bottom' })
+    const marker = new trackasiagl.Marker({ element: button, anchor: 'bottom' })
       .setLngLat([location.longitude, location.latitude])
       .setPopup(popup)
       .addTo(map);
