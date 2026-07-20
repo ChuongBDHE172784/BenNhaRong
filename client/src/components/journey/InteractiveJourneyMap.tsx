@@ -94,8 +94,7 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
     map.addControl(new trackasiagl.NavigationControl({ showCompass: false, showZoom: true }), 'top-right');
 
     let removeSovereigntyLayer: () => void = () => undefined;
-    const handleError = (e: any) => {
-      console.error('[map:error]', e);
+    const handleError = () => {
       setLoading(false);
       setError('Không thể tải bản đồ TrackAsia. Hãy kiểm tra API key, giới hạn tên miền và kết nối mạng.');
     };

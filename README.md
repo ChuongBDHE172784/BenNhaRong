@@ -92,6 +92,10 @@ VITE_TRACKASIA_API_KEY=
 
 Đăng ký và lấy API key theo [tài liệu TrackAsia](https://docs.track-asia.com/guides/), thêm khóa vào `client/.env`, rồi khởi động lại Vite. Cần giới hạn key theo domain/referrer và hạn mức sử dụng trong tài khoản TrackAsia. Biến `VITE_` được trình duyệt đọc nên không phải secret phía server; không commit khóa thật và luôn cấu hình giới hạn domain.
 
+Vite thay thế `VITE_TRACKASIA_API_KEY` ngay trong lúc build, không đọc biến này khi bundle đã được khởi chạy. Vì vậy môi trường deploy phải cung cấp biến cho **build command** và phải build/deploy lại sau mỗi lần thêm hoặc đổi key. Production build sẽ dừng sớm với thông báo cấu hình nếu biến bị thiếu hoặc rỗng.
+
+Trong danh sách domain/referrer của TrackAsia, thêm đầy đủ origin production thực tế (bao gồm cả biến thể `www` hoặc custom domain nếu cùng được sử dụng). Server gửi referrer theo chính sách `strict-origin-when-cross-origin` và CSP chỉ mở các kết nối bản đồ tới `https://maps.track-asia.com`; `blob:` được cho phép riêng cho TrackAsia Web Worker. Nếu nền tảng deploy ghi đè response headers, cần giữ tương đương các directive `connect-src`, `img-src`, `worker-src` và `child-src` trong cấu hình của nền tảng.
+
 Nếu khóa trống, `/journey` giữ SVG nội bộ làm fallback và hiển thị hướng dẫn cấu hình. Nếu khóa sai hoặc bị chặn domain, giao diện báo lỗi TrackAsia; project không fallback sang OpenStreetMap hay provider thứ ba.
 
 ## Seed dữ liệu
