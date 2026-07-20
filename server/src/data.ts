@@ -5,7 +5,21 @@ export type Artifact = { id: string; room: string; title: string; era: string; t
 export type QuizQuestion = { id: string; question: string; options: string[]; answer: number; explanation: string; sourceId: string };
 
 const imgs = {
-  day: '', night: '', facade: '', museum: '', altar: ''
+  day: '/assets/day.png',
+  night: '/assets/night.png',
+  facade: '/assets/facade.png',
+  museum: '/assets/museum.png',
+  altar: '/assets/altar.png',
+  ship: '/assets/ship.jpg',
+  tours: '/assets/tours.jpg',
+  saigon_port: '/assets/saigon_port.jpg',
+  marseille_port: '/assets/marseille_port.jpg',
+  pacbo: '/assets/pacbo.jpg',
+  versailles: '/assets/versailles.jpg',
+  saigon_river: '/assets/saigon_river.jpg',
+  singapore_port: '/assets/singapore_port.jpg',
+  colombo_port: '/assets/colombo_port.jpg',
+  portsaid_port: '/assets/portsaid_port.jpg'
 };
 
 export const sources: Source[] = [
@@ -21,42 +35,42 @@ export const sources: Source[] = [
 ];
 
 export const events: EventItem[] = [
-  { id: 'construction', year: '1862–1863', title: 'Nhà Rồng được xây dựng', category: 'Kiến trúc', summary: 'Trụ sở của Messageries Impériales hình thành bên sông Sài Gòn.', detail: 'Công trình kết hợp bố cục kiến trúc Pháp với các chi tiết trang trí gợi đình chùa Việt Nam. Đôi rồng trên mái tạo nên tên gọi Nhà Rồng.', image: imgs.facade, sourceId: 'hcm-architecture' },
-  { id: 'trading-port', year: 'Cuối TK XIX', title: 'Một cửa ngõ thương cảng', category: 'Lịch sử', summary: 'Bến cảng gắn với mạng lưới tàu biển Sài Gòn – Đông Dương – châu Âu.', detail: 'Vị trí bên sông khiến nơi đây trở thành một điểm nối quan trọng của hoạt động hàng hải và giao thương Sài Gòn.', image: imgs.day, sourceId: 'svhtt-museum' },
-  { id: 'departure', year: '05.06.1911', title: 'Ngày con tàu rời bến', category: 'Hành trình', summary: 'Nguyễn Tất Thành, với tên Văn Ba, rời Bến Nhà Rồng trên tàu Amiral Latouche Tréville.', detail: 'Làm phụ bếp trên tàu, người thanh niên 21 tuổi bắt đầu hành trình tìm một con đường giải phóng dân tộc.', image: imgs.night, sourceId: 'museum-history' },
-  { id: 'marseille', year: '06.07.1911', title: 'Đến Marseille', category: 'Hành trình', summary: 'Sau hơn một tháng qua nhiều cảng, tàu cập Marseille ở miền Nam nước Pháp.', detail: 'Chặng biển đầu tiên đi qua Singapore, Colombo và Port Said trước khi vượt Địa Trung Hải.', image: imgs.day, sourceId: 'museum-voyage' },
-  { id: 'versailles', year: '1919', title: 'Bản Yêu sách tại Paris', category: 'Hành trình', summary: 'Nguyễn Ái Quốc gửi bản yêu sách của nhân dân An Nam tới Hội nghị Versailles.', detail: 'Bản yêu sách đòi các quyền tự do, dân chủ và bình đẳng cho nhân dân Việt Nam.', image: imgs.museum, sourceId: 'party-history' },
-  { id: 'tours', year: '12.1920', title: 'Bước ngoặt nhận thức', category: 'Hành trình', summary: 'Tại Đại hội Tours, Nguyễn Ái Quốc lựa chọn con đường cách mạng vô sản.', detail: 'Sự kiện đánh dấu một bước phát triển quan trọng trong quá trình tìm đường giải phóng dân tộc.', image: imgs.altar, sourceId: 'party-history' },
+  { id: 'construction', year: '1862–1863', title: 'Nhà Rồng được xây dựng', category: 'Kiến trúc', summary: 'Trụ sở của Messageries Impériales hình thành bên sông Sài Gòn.', detail: 'Công trình kết hợp bố cục kiến trúc Pháp với các chi tiết trang trí gợi đình chùa Việt Nam. Đôi rồng trên mái tạo nên tên gọi Nhà Rồng.', image: imgs.saigon_port, sourceId: 'hcm-architecture' },
+  { id: 'trading-port', year: 'Cuối TK XIX', title: 'Một cửa ngõ thương cảng', category: 'Lịch sử', summary: 'Bến cảng gắn với mạng lưới tàu biển Sài Gòn – Đông Dương – châu Âu.', detail: 'Vị trí bên sông khiến nơi đây trở thành một điểm nối quan trọng của hoạt động hàng hải và giao thương Sài Gòn.', image: imgs.saigon_river, sourceId: 'svhtt-museum' },
+  { id: 'departure', year: '05.06.1911', title: 'Ngày con tàu rời bến', category: 'Hành trình', summary: 'Nguyễn Tất Thành, với tên Văn Ba, rời Bến Nhà Rồng trên tàu Amiral Latouche Tréville.', detail: 'Làm phụ bếp trên tàu, người thanh niên 21 tuổi bắt đầu hành trình tìm một con đường giải phóng dân tộc.', image: imgs.ship, sourceId: 'museum-history' },
+  { id: 'marseille', year: '06.07.1911', title: 'Đến Marseille', category: 'Hành trình', summary: 'Sau hơn một tháng qua nhiều cảng, tàu cập Marseille ở miền Nam nước Pháp.', detail: 'Chặng biển đầu tiên đi qua Singapore, Colombo và Port Said trước khi vượt Địa Trung Hải.', image: imgs.marseille_port, sourceId: 'museum-voyage' },
+  { id: 'versailles', year: '1919', title: 'Bản Yêu sách tại Paris', category: 'Hành trình', summary: 'Nguyễn Ái Quốc gửi bản yêu sách của nhân dân An Nam tới Hội nghị Versailles.', detail: 'Bản yêu sách đòi các quyền tự do, dân chủ và bình đẳng cho nhân dân Việt Nam.', image: imgs.versailles, sourceId: 'party-history' },
+  { id: 'tours', year: '12.1920', title: 'Bước ngoặt nhận thức', category: 'Hành trình', summary: 'Tại Đại hội Tours, Nguyễn Ái Quốc lựa chọn con đường cách mạng vô sản.', detail: 'Sự kiện đánh dấu một bước phát triển quan trọng trong quá trình tìm đường giải phóng dân tộc.', image: imgs.tours, sourceId: 'party-history' },
   { id: 'memorial', year: '07.09.1979', title: 'Trở thành di tích lưu niệm', category: 'Bảo tàng', summary: 'TP.HCM quyết định giữ lại Nhà Rồng làm di tích lưu niệm về Chủ tịch Hồ Chí Minh.', detail: 'Quyết định số 1315/QĐ-UB đặt nền tảng cho chức năng bảo tồn và giáo dục của công trình.', image: imgs.museum, sourceId: 'svhtt-museum' },
   { id: 'today', year: 'Hôm nay', title: 'Một không gian ký ức sống', category: 'Bảo tàng', summary: 'Bến Nhà Rồng là nơi tham quan, học tập và nghiên cứu về Chủ tịch Hồ Chí Minh.', detail: 'Công trình tiếp tục kết nối di sản lịch sử với công chúng trong bối cảnh đô thị đương đại.', image: imgs.night, sourceId: 'svhtt-museum' }
 ];
 
 export const journey: JourneyStop[] = [
-  { id: 'saigon', order: 1, name: 'Bến Nhà Rồng, Sài Gòn', date: '05/06/1911', coordinates: [10.7682, 106.7068], summary: 'Tàu Amiral Latouche Tréville rời bến, mang theo người phụ bếp Văn Ba.', significance: 'Điểm khởi đầu của hành trình tìm đường cứu nước kéo dài ba thập niên.', image: imgs.night, sourceId: 'hcm-journey' },
-  { id: 'singapore', order: 2, name: 'Singapore', date: '08/06/1911', coordinates: [1.264, 103.82], summary: 'Con tàu đến cảng Singapore sau ba ngày rời Sài Gòn.', significance: 'Cảng dừng đầu tiên được nguồn tư liệu ghi rõ trong hải trình năm 1911.', image: imgs.day, sourceId: 'hcm-journey' },
-  { id: 'colombo', order: 3, name: 'Colombo, Sri Lanka', date: '14/06/1911', coordinates: [6.9271, 79.8612], summary: 'Từ Singapore, tàu vượt Ấn Độ Dương và ghé Colombo.', significance: 'Một chặng quan trọng trên tuyến hàng hải nối Đông Nam Á với châu Âu.', image: imgs.facade, sourceId: 'museum-voyage' },
-  { id: 'portsaid', order: 4, name: 'Port Said, Ai Cập', date: '30/06/1911', coordinates: [31.2653, 32.3019], summary: 'Tàu tới Port Said ở cửa bắc kênh đào Suez.', significance: 'Cửa ngõ nối Ấn Độ Dương với Địa Trung Hải.', image: imgs.museum, sourceId: 'hcm-journey' },
-  { id: 'marseille-stop', order: 5, name: 'Marseille, Pháp', date: '06/07/1911', coordinates: [43.2965, 5.3698], summary: 'Tàu cập cảng Marseille, hoàn tất chặng biển đầu tiên.', significance: 'Từ đây hành trình khảo nghiệm thực tế tại nhiều châu lục tiếp tục mở rộng.', image: imgs.day, sourceId: 'museum-voyage' },
-  { id: 'paris', order: 6, name: 'Paris, Pháp', date: '1917–1923', coordinates: [48.8566, 2.3522], summary: 'Hoạt động trong phong trào công nhân Pháp; năm 1919 gửi Bản Yêu sách của nhân dân An Nam.', significance: 'Giai đoạn phát triển nhận thức chính trị và xác định hướng đi cách mạng.', image: imgs.altar, sourceId: 'party-history' },
-  { id: 'pacbo', order: 7, name: 'Pác Bó, Cao Bằng', date: '28/01/1941', coordinates: [22.9747, 106.0518], summary: 'Nguyễn Ái Quốc trở về Tổ quốc sau 30 năm hoạt động ở nước ngoài.', significance: 'Khép lại hành trình địa lý, mở ra giai đoạn trực tiếp lãnh đạo cách mạng trong nước.', image: imgs.museum, sourceId: 'party-history' }
+  { id: 'saigon', order: 1, name: 'Bến Nhà Rồng, Sài Gòn', date: '05/06/1911', coordinates: [10.7682, 106.7068], summary: 'Tàu Amiral Latouche Tréville rời bến, mang theo người phụ bếp Văn Ba.', significance: 'Điểm khởi đầu của hành trình tìm đường cứu nước kéo dài ba thập niên.', image: imgs.saigon_port, sourceId: 'hcm-journey' },
+  { id: 'singapore', order: 2, name: 'Singapore', date: '08/06/1911', coordinates: [1.264, 103.82], summary: 'Con tàu đến cảng Singapore sau ba ngày rời Sài Gòn.', significance: 'Cảng dừng đầu tiên được nguồn tư liệu ghi rõ trong hải trình năm 1911.', image: imgs.singapore_port, sourceId: 'hcm-journey' },
+  { id: 'colombo', order: 3, name: 'Colombo, Sri Lanka', date: '14/06/1911', coordinates: [6.9271, 79.8612], summary: 'Từ Singapore, tàu vượt Ấn Độ Dương và ghé Colombo.', significance: 'Một chặng quan trọng trên tuyến hàng hải nối Đông Nam Á với châu Âu.', image: imgs.colombo_port, sourceId: 'museum-voyage' },
+  { id: 'portsaid', order: 4, name: 'Port Said, Ai Cập', date: '30/06/1911', coordinates: [31.2653, 32.3019], summary: 'Tàu tới Port Said ở cửa bắc kênh đào Suez.', significance: 'Cửa ngõ nối Ấn Độ Dương với Địa Trung Hải.', image: imgs.portsaid_port, sourceId: 'hcm-journey' },
+  { id: 'marseille-stop', order: 5, name: 'Marseille, Pháp', date: '06/07/1911', coordinates: [43.2965, 5.3698], summary: 'Tàu cập cảng Marseille, hoàn tất chặng biển đầu tiên.', significance: 'Từ đây hành trình khảo nghiệm thực tế tại nhiều châu lục tiếp tục mở rộng.', image: imgs.marseille_port, sourceId: 'museum-voyage' },
+  { id: 'paris', order: 6, name: 'Paris, Pháp', date: '1917–1923', coordinates: [48.8566, 2.3522], summary: 'Hoạt động trong phong trào công nhân Pháp; năm 1919 gửi Bản Yêu sách của nhân dân An Nam.', significance: 'Giai đoạn phát triển nhận thức chính trị và xác định hướng đi cách mạng.', image: imgs.versailles, sourceId: 'party-history' },
+  { id: 'pacbo', order: 7, name: 'Pác Bó, Cao Bằng', date: '28/01/1941', coordinates: [22.9747, 106.0518], summary: 'Nguyễn Ái Quốc trở về Tổ quốc sau 30 năm hoạt động ở nước ngoài.', significance: 'Khép lại hành trình địa lý, mở ra giai đoạn trực tiếp lãnh đạo cách mạng trong nước.', image: imgs.pacbo, sourceId: 'party-history' }
 ];
 
 const rooms = ['Bến cảng Sài Gòn', 'Ngày ra đi', 'Hành trình thế giới', 'Bến Nhà Rồng qua thời gian', 'Bến Nhà Rồng ngày nay'];
 const artifactBase = [
-  ['Trụ sở Messageries Impériales', '1863', 'Ảnh kiến trúc', 'Dấu mốc hình thành công trình Nhà Rồng bên sông Sài Gòn.', imgs.facade, 'hcm-architecture'],
-  ['Thương cảng nhìn từ sông', 'Đầu TK XX', 'Ảnh tư liệu', 'Gợi lại không gian hàng hải sôi động của Sài Gòn.', imgs.day, 'svhtt-museum'],
+  ['Trụ sở Messageries Impériales', '1863', 'Ảnh kiến trúc', 'Dấu mốc hình thành công trình Nhà Rồng bên sông Sài Gòn.', imgs.saigon_port, 'hcm-architecture'],
+  ['Thương cảng nhìn từ sông', 'Đầu TK XX', 'Ảnh tư liệu', 'Gợi lại không gian hàng hải sôi động của Sài Gòn.', imgs.saigon_river, 'svhtt-museum'],
   ['Đôi rồng trên mái', 'TK XIX', 'Chi tiết kiến trúc', 'Hình tượng tạo nên tên gọi quen thuộc Nhà Rồng.', imgs.facade, 'hcm-architecture'],
-  ['Ngày 05 tháng 06', '1911', 'Mốc lịch sử', 'Ngày con tàu rời cảng Sài Gòn bắt đầu chuyến đi lịch sử.', imgs.night, 'museum-history'],
-  ['Tên gọi Văn Ba', '1911', 'Tư liệu diễn giải', 'Tên Nguyễn Tất Thành sử dụng khi làm phụ bếp trên tàu.', imgs.museum, 'hcm-journey'],
-  ['Amiral Latouche Tréville', '1911', 'Tư liệu tàu biển', 'Con tàu của hãng Chargeurs Réunis gắn với chặng đi đầu tiên.', imgs.day, 'museum-voyage'],
-  ['Cảng Keppel, Singapore', '08/06/1911', 'Bản đồ', 'Điểm dừng đầu tiên sau khi tàu rời Sài Gòn.', imgs.day, 'museum-voyage'],
-  ['Hải trình qua Colombo', '14/06/1911', 'Bản đồ', 'Chặng đi qua Ấn Độ Dương đến Sri Lanka.', imgs.museum, 'hcm-journey'],
-  ['Cửa ngõ Port Said', '30/06/1911', 'Bản đồ', 'Điểm nối hải trình từ kênh Suez ra Địa Trung Hải.', imgs.facade, 'hcm-journey'],
-  ['Marseille', '06/07/1911', 'Ảnh địa danh', 'Nơi con tàu cập cảng sau chặng biển hơn một tháng.', imgs.day, 'museum-voyage'],
+  ['Ngày 05 tháng 06', '1911', 'Mốc lịch sử', 'Ngày con tàu rời cảng Sài Gòn bắt đầu chuyến đi lịch sử.', imgs.day, 'museum-history'],
+  ['Tên gọi Văn Ba', '1911', 'Tư liệu diễn giải', 'Tên Nguyễn Tất Thành sử dụng khi làm phụ bếp trên tàu.', imgs.versailles, 'hcm-journey'],
+  ['Amiral Latouche Tréville', '1911', 'Tư liệu tàu biển', 'Con tàu của hãng Chargeurs Réunis gắn với chặng đi đầu tiên.', imgs.ship, 'museum-voyage'],
+  ['Cảng Keppel, Singapore', '08/06/1911', 'Bản đồ', 'Điểm dừng đầu tiên sau khi tàu rời Sài Gòn.', imgs.singapore_port, 'museum-voyage'],
+  ['Hải trình qua Colombo', '14/06/1911', 'Bản đồ', 'Chặng đi qua Ấn Độ Dương đến Sri Lanka.', imgs.colombo_port, 'hcm-journey'],
+  ['Cửa ngõ Port Said', '30/06/1911', 'Bản đồ', 'Điểm nối hải trình từ kênh Suez ra Địa Trung Hải.', imgs.portsaid_port, 'hcm-journey'],
+  ['Marseille', '06/07/1911', 'Ảnh địa danh', 'Nơi con tàu cập cảng sau chặng biển hơn một tháng.', imgs.marseille_port, 'museum-voyage'],
   ['Nhà Rồng sau thống nhất', '1975–1979', 'Ảnh ký ức', 'Giai đoạn công trình được gìn giữ để trở thành di tích lưu niệm.', imgs.museum, 'svhtt-museum'],
-  ['Quyết định 1315/QĐ-UB', '07/09/1979', 'Văn bản', 'Mốc xác lập Nhà Rồng là di tích lưu niệm về Chủ tịch Hồ Chí Minh.', imgs.altar, 'svhtt-museum'],
+  ['Quyết định 1315/QĐ-UB', '07/09/1979', 'Văn bản', 'Mốc xác lập Nhà Rồng là di tích lưu niệm về Chủ tịch Hồ Chí Minh.', imgs.facade, 'svhtt-museum'],
   ['Không gian trưng bày', 'Hiện nay', 'Ảnh bảo tàng', 'Nơi giới thiệu tư liệu về cuộc đời và sự nghiệp Chủ tịch Hồ Chí Minh.', imgs.altar, 'svhtt-museum'],
-  ['Mặt tiền bên sông', 'Hiện nay', 'Ảnh kiến trúc', 'Diện mạo công trình trong không gian đô thị ven sông.', imgs.facade, 'commons'],
+  ['Mặt tiền bên sông', 'Hiện nay', 'Ảnh kiến trúc', 'Diện mạo công trình trong không gian đô thị ven sông.', imgs.day, 'commons'],
   ['Nhà Rồng về đêm', 'Hiện nay', 'Ảnh đương đại', 'Công trình nổi bật bên dòng sông Sài Gòn khi thành phố lên đèn.', imgs.night, 'commons']
 ] as const;
 export const artifacts: Artifact[] = artifactBase.map((a, i) => ({ id: `artifact-${i + 1}`, room: rooms[Math.floor(i / 3)] ?? rooms[4]!, title: a[0], era: a[1], type: a[2], description: a[3], image: a[4], sourceId: a[5] }));

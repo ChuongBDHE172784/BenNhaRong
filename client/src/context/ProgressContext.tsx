@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, useCallback, type ReactNode } from 'react';
 
 export type ProgressState = { visitedPages: string[]; journeyStops: string[]; timelineEvents: string[]; hotspots: string[]; badges: string[]; quizScore: number; games: string[] };
 const initial: ProgressState = { visitedPages: [], journeyStops: [], timelineEvents: [], hotspots: [], badges: [], quizScore: 0, games: [] };
@@ -10,7 +10,27 @@ const ProgressContext = createContext<ContextValue | null>(null);
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState<ProgressState>(() => { try { return { ...initial, ...JSON.parse(localStorage.getItem(key) || '{}') }; } catch { return initial; } });
   useEffect(() => localStorage.setItem(key, JSON.stringify(progress)), [progress]);
-  const value = useMemo<ContextValue>(() => ({ progress, completion: completionFor(progress), mark: (field, value) => setProgress((p) => (p[field] as string[]).includes(value) ? p : ({ ...p, [field]: [...(p[field] as string[]), value] })), setQuizScore: (score) => setProgress((p) => score <= p.quizScore ? p : ({ ...p, quizScore: score })), reset: () => setProgress(initial) }), [progress]);
+
+  const mark = useCallback((field: keyof Omit<ProgressState, 'quizScore'>, value: string) => {
+    setProgress((p) => (p[field] as string[]).includes(value) ? p : ({ ...p, [field]: [...(p[field] as string[]), value] }));
+  }, []);
+
+  const setQuizScore = useCallback((score: number) => {
+    setProgress((p) => score <= p.quizScore ? p : ({ ...p, quizScore: score }));
+  }, []);
+
+  const reset = useCallback(() => {
+    setProgress(initial);
+  }, []);
+
+  const value = useMemo<ContextValue>(() => ({
+    progress,
+    completion: completionFor(progress),
+    mark,
+    setQuizScore,
+    reset
+  }), [progress, mark, setQuizScore, reset]);
+
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
 }
 export function useProgress() { const value = useContext(ProgressContext); if (!value) throw new Error('ProgressProvider missing'); return value; }
