@@ -1,0 +1,338 @@
+.sovereignty-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  overflow: hidden;
+  background: #071c21;
+  isolation: isolate;
+}
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}
+.map-scroll {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.sovereignty-map svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+}
+.map-grid line {
+  stroke: #d5bd88;
+  stroke-width: 0.7;
+  stroke-dasharray: 2 9;
+  opacity: 0.18;
+}
+.landmasses path {
+  fill: #c3ac7d;
+  stroke: #e1c994;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  opacity: 0.76;
+}
+.landmasses .vietnam-mainland {
+  fill: #9e3b35;
+  stroke: #f0cf87;
+  stroke-width: 2.5;
+  opacity: 1;
+}
+.region-labels text {
+  fill: #ead7ad;
+  font:
+    600 12px "Be Vietnam Pro",
+    sans-serif;
+  letter-spacing: 3px;
+  opacity: 0.6;
+}
+.region-labels .sea-label {
+  fill: #efcf87;
+  font:
+    600 15px Lora,
+    serif;
+  letter-spacing: 4px;
+  opacity: 0.9;
+}
+.region-labels .ocean-label {
+  font-size: 10px;
+  opacity: 0.35;
+}
+.compass-rose circle {
+  fill: none;
+  stroke: #d3b978;
+  stroke-width: 1;
+  opacity: 0.6;
+}
+.compass-rose path {
+  fill: #d3b978;
+  opacity: 0.65;
+}
+.compass-rose text {
+  fill: #d3b978;
+  font:
+    600 12px Lora,
+    serif;
+  text-anchor: middle;
+}
+.route-ghost {
+  fill: none;
+  stroke: #e7d5ae;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.12;
+}
+.route-active {
+  fill: none;
+  stroke: #d8ad59;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 4 9;
+  filter: drop-shadow(0 0 6px rgba(216, 173, 89, 0.7));
+}
+.route-ship circle {
+  fill: #a33f38;
+  stroke: #f0d18b;
+  stroke-width: 2;
+}
+.route-ship svg {
+  color: #f5e2b9;
+  stroke-width: 1.8;
+}
+.journey-marker {
+  cursor: pointer;
+  outline: none;
+}
+.journey-marker .marker-pulse {
+  fill: #0b252a;
+  stroke: #d2ad63;
+  stroke-width: 1.5;
+  opacity: 0.9;
+  transition:
+    fill 0.2s,
+    stroke 0.2s,
+    transform 0.2s;
+}
+.journey-marker .marker-core {
+  fill: #d2ad63;
+  stroke: #071c21;
+  stroke-width: 2;
+}
+.journey-marker .marker-number {
+  fill: #10272b;
+  text-anchor: middle;
+  font:
+    700 9px "Be Vietnam Pro",
+    sans-serif;
+  pointer-events: none;
+}
+.journey-marker .marker-label {
+  fill: #f0dfbe;
+  font:
+    600 11px "Be Vietnam Pro",
+    sans-serif;
+  paint-order: stroke;
+  stroke: #071c21;
+  stroke-width: 4;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.journey-marker:hover .marker-pulse,
+.journey-marker:focus-visible .marker-pulse,
+.journey-marker.active .marker-pulse {
+  fill: #a33f38;
+  stroke: #f0d18b;
+  transform: scale(1.2);
+}
+.journey-marker.visited .marker-core {
+  fill: #eee4ce;
+}
+.island-hotspot {
+  cursor: pointer;
+  outline: none;
+}
+.island-hotspot > circle {
+  fill: #f0d18b;
+  stroke: #8f2f2f;
+  stroke-width: 1;
+}
+.island-hotspot > path {
+  fill: none;
+  stroke: #f0d18b;
+  stroke-width: 0.8;
+  opacity: 0.55;
+}
+.island-hotspot:focus-visible > path,
+.island-hotspot:hover > path {
+  stroke-width: 2;
+  opacity: 1;
+}
+.island-label {
+  fill: #f5dfb4;
+  font:
+    600 10px "Be Vietnam Pro",
+    sans-serif;
+  paint-order: stroke;
+  stroke: #071c21;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+.island-nation {
+  fill: #efb764;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+.island-tooltip rect {
+  fill: #f1e3c6;
+  stroke: #9e3b35;
+  stroke-width: 1.5;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
+}
+.island-tooltip text {
+  fill: #183439;
+  font:
+    500 10px "Be Vietnam Pro",
+    sans-serif;
+}
+.map-cartouche rect {
+  fill: rgba(7, 28, 33, 0.82);
+  stroke: #c6a15b;
+  stroke-width: 1;
+}
+.map-cartouche text {
+  fill: #ebd9b4;
+  font:
+    600 11px Lora,
+    serif;
+  letter-spacing: 2px;
+}
+.map-cartouche .cartouche-sub {
+  fill: #c6a15b;
+  font:
+    500 9px "Be Vietnam Pro",
+    sans-serif;
+  letter-spacing: 2.5px;
+}
+.map-legend {
+  position: absolute;
+  z-index: 3;
+  left: 18px;
+  bottom: 48px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(7, 27, 31, 0.9);
+  border: 1px solid rgba(198, 161, 91, 0.3);
+  font-size: 9px;
+  color: #ddcfb2;
+}
+.map-legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.map-legend i {
+  display: block;
+}
+.legend-route {
+  width: 21px;
+  border-top: 2px dashed #d8ad59;
+}
+.legend-visited {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #eee4ce;
+  border: 2px solid #c6a15b;
+}
+.map-legend svg {
+  width: 13px;
+  color: #c6a15b;
+}
+.sovereignty-note {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  margin: 0;
+  color: #f2d79d;
+  font:
+    600 11px Lora,
+    serif;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  text-shadow: 0 2px 4px #031012;
+}
+
+@media (max-width: 900px) {
+  .sovereignty-map {
+    height: 55vh;
+    min-height: 430px;
+    max-width: 100%;
+  }
+  .map-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+  .map-canvas {
+    min-width: 760px;
+  }
+  .map-legend {
+    left: 10px;
+    right: 10px;
+    bottom: 44px;
+    justify-content: center;
+  }
+  .sovereignty-note {
+    font-size: 10px;
+  }
+}
+@media (max-width: 520px) {
+  .sovereignty-map {
+    height: 48vh;
+    min-height: 390px;
+  }
+  .map-canvas {
+    min-width: 720px;
+  }
+  .map-legend {
+    gap: 8px;
+    padding: 7px 8px;
+    overflow: hidden;
+  }
+  .map-legend span {
+    font-size: 8px;
+  }
+  .map-legend span:nth-child(3) {
+    display: none;
+  }
+  .sovereignty-note {
+    width: 100%;
+    text-align: center;
+    font-size: 9px;
+  }
+  .island-tooltip text {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .journey-marker .marker-pulse {
+    transition: none;
+  }
+  .route-active {
+    stroke-dasharray: none;
+  }
+  .route-ship {
+    transition: none;
+  }
+}

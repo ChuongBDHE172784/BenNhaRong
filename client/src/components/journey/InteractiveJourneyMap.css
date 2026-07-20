@@ -1,0 +1,357 @@
+.interactive-map-shell {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: #06171b;
+}
+
+.interactive-map-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 390px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.interactive-map-stage::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 95px rgba(3, 14, 17, 0.48);
+  background-image: radial-gradient(circle at 18% 12%, rgba(218, 180, 105, 0.08), transparent 28%);
+}
+
+.interactive-map-canvas {
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+}
+
+.interactive-map-canvas .vietmapgl-canvas {
+  outline: none;
+}
+
+.interactive-map-canvas .vietmapgl-canvas:focus-visible {
+  outline: 3px solid #efd28f;
+  outline-offset: -4px;
+}
+
+.interactive-map-canvas .vietmapgl-ctrl-top-right {
+  top: 78px;
+  right: 10px;
+}
+
+.interactive-map-canvas .vietmapgl-ctrl-group {
+  overflow: hidden;
+  border: 1px solid rgba(220, 183, 108, 0.55);
+  border-radius: 3px;
+  box-shadow: 0 12px 28px rgba(2, 12, 14, 0.34);
+  background: #f0e2c6;
+}
+
+.interactive-map-canvas .vietmapgl-ctrl-group button {
+  width: 38px;
+  height: 38px;
+}
+
+.interactive-map-canvas .vietmapgl-ctrl-attrib {
+  color: #183238;
+  background: rgba(244, 235, 215, 0.92);
+}
+
+.interactive-map-canvas .vietmapgl-ctrl-attrib a {
+  color: #7a302e;
+}
+
+.journey-map-actions {
+  position: absolute;
+  z-index: 4;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: calc(100% - 74px);
+}
+
+.journey-map-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 9px 13px;
+  border: 1px solid rgba(221, 184, 109, 0.55);
+  border-radius: 3px;
+  background: rgba(8, 31, 36, 0.94);
+  color: #f0dfbd;
+  box-shadow: 0 12px 28px rgba(1, 10, 12, 0.28);
+  font: 600 10px "Be Vietnam Pro", sans-serif;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.journey-map-actions button:hover,
+.journey-map-actions button:focus-visible {
+  border-color: #efd28f;
+  background: #8f3833;
+  outline: none;
+}
+
+.journey-map-actions svg {
+  width: 16px;
+  height: 16px;
+  color: #ddb86d;
+}
+
+.journey-map-status,
+.journey-map-error {
+  position: absolute;
+  z-index: 6;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 30px;
+  background: rgba(5, 24, 28, 0.92);
+  color: #f0dfbd;
+  text-align: center;
+  font-size: 12px;
+}
+
+.journey-map-error {
+  inset: auto 16px 20px;
+  justify-content: flex-start;
+  border: 1px solid rgba(201, 84, 72, 0.72);
+  background: rgba(54, 20, 19, 0.95);
+  color: #f5d5c8;
+}
+
+.journey-map-error svg {
+  flex: 0 0 auto;
+  width: 19px;
+}
+
+.map-loader {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(222, 185, 109, 0.32);
+  border-top-color: #deb96d;
+  border-radius: 50%;
+  animation: map-spin 0.8s linear infinite;
+}
+
+.interactive-sovereignty-note {
+  position: relative;
+  z-index: 7;
+  margin: 0;
+  padding: 10px 18px;
+  border-top: 1px solid rgba(214, 176, 101, 0.28);
+  background: #081f24;
+  color: #f0d495;
+  text-align: center;
+  font: 600 11px Lora, serif;
+  letter-spacing: 0.06em;
+}
+
+.journey-map-marker,
+.sovereignty-marker {
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.journey-map-marker {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border: 2px solid #f1d48d;
+  border-radius: 50%;
+  background: #0c292f;
+  color: #f4e5c5;
+  box-shadow: 0 0 0 5px rgba(11, 39, 45, 0.48), 0 8px 18px rgba(0, 0, 0, 0.42);
+  font: 700 10px "Be Vietnam Pro", sans-serif;
+  transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.journey-map-marker:hover,
+.journey-map-marker:focus-visible,
+.journey-map-marker.is-active {
+  z-index: 4;
+  outline: none;
+  transform: scale(1.22);
+  background: #9a3c36;
+  box-shadow: 0 0 0 6px rgba(216, 173, 89, 0.3), 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.journey-map-marker.is-visited::after {
+  content: '✓';
+  position: absolute;
+  top: -7px;
+  right: -8px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #efe3c8;
+  color: #163036;
+  font-size: 9px;
+}
+
+.journey-ship-marker {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 2px solid #f1d48d;
+  border-radius: 50%;
+  background: #963b35;
+  color: #f5e6c5;
+  box-shadow: 0 0 18px rgba(216, 173, 89, 0.72);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.sovereignty-marker {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 170px;
+  min-height: 48px;
+  background: transparent;
+  color: #f5dfb1;
+  text-align: left;
+  filter: drop-shadow(0 3px 3px rgba(3, 15, 18, 0.95));
+}
+
+.sovereignty-marker__cluster {
+  position: relative;
+  flex: 0 0 auto;
+  width: 25px;
+  height: 25px;
+  border: 1px solid rgba(240, 205, 133, 0.65);
+  border-radius: 50%;
+}
+
+.sovereignty-marker__cluster i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border: 1px solid #6f2928;
+  border-radius: 50%;
+  background: #f0cd85;
+}
+
+.sovereignty-marker__cluster i:nth-child(1) { top: 4px; left: 6px; }
+.sovereignty-marker__cluster i:nth-child(2) { top: 11px; right: 4px; }
+.sovereignty-marker__cluster i:nth-child(3) { bottom: 3px; left: 5px; }
+
+.sovereignty-marker__label {
+  display: grid;
+  padding: 4px 6px;
+  border-radius: 2px;
+  background: rgba(6, 27, 31, 0.82);
+  white-space: nowrap;
+}
+
+.sovereignty-marker__label strong {
+  font: 600 10px "Be Vietnam Pro", sans-serif;
+}
+
+.sovereignty-marker__label em {
+  color: #f0bb62;
+  font: normal 700 9px "Be Vietnam Pro", sans-serif;
+  letter-spacing: 0.08em;
+}
+
+.sovereignty-marker:hover .sovereignty-marker__label,
+.sovereignty-marker:focus-visible .sovereignty-marker__label {
+  background: #7f302d;
+  outline: 2px solid #f0cd85;
+}
+
+.interactive-map-canvas .journey-map-popup .vietmapgl-popup-content {
+  border: 1px solid #b9874c;
+  border-radius: 3px;
+  background: #efe2c6;
+  color: #183238;
+  box-shadow: 0 16px 35px rgba(2, 13, 16, 0.46);
+}
+
+.interactive-map-canvas .vietmapgl-popup-anchor-bottom .vietmapgl-popup-tip {
+  border-top-color: #efe2c6;
+}
+
+.interactive-map-canvas .vietmapgl-popup-close-button {
+  width: 34px;
+  height: 34px;
+  color: #6d2827;
+  font-size: 22px;
+}
+
+.sovereignty-popup {
+  padding: 7px 8px 5px;
+}
+
+.sovereignty-popup h3 {
+  margin: 0 30px 2px 0;
+  font: 600 18px Lora, serif;
+}
+
+.sovereignty-popup strong {
+  color: #8c3531;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sovereignty-popup p {
+  margin: 12px 0 0;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.journey-map-empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
+  min-height: 390px;
+  padding: 30px;
+  background: #071c21;
+  color: #ddcfb2;
+  text-align: center;
+}
+
+@keyframes map-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 900px) {
+  .interactive-map-stage { min-height: 410px; }
+  .journey-map-actions { top: 12px; left: 12px; max-width: calc(100% - 68px); }
+  .journey-map-actions button { min-height: 40px; padding: 8px 10px; font-size: 9px; }
+  .interactive-map-canvas .vietmapgl-ctrl-top-right { top: 62px; }
+  .sovereignty-marker { min-width: 156px; min-height: 52px; }
+  .sovereignty-marker__label strong { font-size: 9px; }
+}
+
+@media (max-width: 520px) {
+  .journey-map-actions { right: 54px; max-width: none; }
+  .journey-map-actions button { flex: 1 1 130px; justify-content: center; }
+  .interactive-sovereignty-note { padding: 9px 10px; font-size: 10px; }
+  .interactive-map-canvas .vietmapgl-ctrl-attrib { max-width: calc(100vw - 20px); font-size: 9px; }
+  .journey-map-error { inset: auto 8px 8px; padding: 12px; font-size: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-loader { animation: none; }
+  .journey-map-marker { transition: none; }
+}
