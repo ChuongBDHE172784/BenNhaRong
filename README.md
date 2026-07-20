@@ -94,7 +94,9 @@ VITE_TRACKASIA_API_KEY=
 
 Vite thay thế `VITE_TRACKASIA_API_KEY` ngay trong lúc build, không đọc biến này khi bundle đã được khởi chạy. Vì vậy môi trường deploy phải cung cấp biến cho **build command** và phải build/deploy lại sau mỗi lần thêm hoặc đổi key. Production build sẽ dừng sớm với thông báo cấu hình nếu biến bị thiếu hoặc rỗng.
 
-Trong danh sách domain/referrer của TrackAsia, thêm đầy đủ origin production thực tế (bao gồm cả biến thể `www` hoặc custom domain nếu cùng được sử dụng). Server gửi referrer theo chính sách `strict-origin-when-cross-origin` và CSP chỉ mở các kết nối bản đồ tới `https://maps.track-asia.com`; `blob:` được cho phép riêng cho TrackAsia Web Worker. Nếu nền tảng deploy ghi đè response headers, cần giữ tương đương các directive `connect-src`, `img-src`, `worker-src` và `child-src` trong cấu hình của nền tảng.
+Trong danh sách domain/referrer của TrackAsia, thêm hostname production `bennharong.onrender.com` (không thêm `/journey`). Nếu có custom domain hoặc biến thể `www`, cần thêm riêng từng hostname thực sự phục vụ website. Server gửi referrer theo chính sách `strict-origin-when-cross-origin`; CSP mở style/TileJSON/sprite/glyph tại `https://maps.track-asia.com`, vector tile tại `https://tiles.track-asia.com`, và `blob:` cho TrackAsia Web Worker. Nếu nền tảng deploy ghi đè response headers, cần giữ tương đương các directive `connect-src`, `img-src`, `font-src`, `worker-src` và `child-src` trong cấu hình của nền tảng.
+
+Có thể kiểm tra lại dependency host và HTTP status mà không in key bằng `npm run inspect:trackasia`. Script đọc `client/.env`, gọi tuần tự style, TileJSON, sprite JSON/PNG, glyph và một vector tile mẫu rồi chỉ xuất hostname/status. Sau deploy, mở `/journey?mapDebug=1` để xem state, resource type, hostname, status và gợi ý CSP đã được sanitize; panel này không hiển thị key hoặc URL query.
 
 Nếu khóa trống, `/journey` giữ SVG nội bộ làm fallback và hiển thị hướng dẫn cấu hình. Nếu khóa sai hoặc bị chặn domain, giao diện báo lỗi TrackAsia; project không fallback sang OpenStreetMap hay provider thứ ba.
 

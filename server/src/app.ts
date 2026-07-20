@@ -8,6 +8,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { artifacts, badges, events, hotspots, journey, quiz, seedReflections, sources } from './data.js';
+import { contentSecurityPolicyDirectives, currentBuildId } from './security.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const dbPath = join(here, '..', 'data', 'reflections.json');
@@ -29,15 +30,9 @@ app.disable('x-powered-by');
 app.use(helmet({
   crossOriginResourcePolicy: false,
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-  contentSecurityPolicy: {
-    directives: {
-      connectSrc: ["'self'", 'https://maps.track-asia.com'],
-      imgSrc: ["'self'", 'data:', 'blob:', 'https://maps.track-asia.com'],
-      workerSrc: ["'self'", 'blob:'],
-      childSrc: ["'self'", 'blob:']
-    }
-  }
+  contentSecurityPolicy: { directives: contentSecurityPolicyDirectives }
 }));
+app.use((_req, res, next) => { res.setHeader('X-App-Build', currentBuildId()); next(); });
 app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(',') ?? ['http://localhost:5173'] }));
 app.use(express.json({ limit: '20kb' }));
 app.use('/api/reflections', rateLimit({ windowMs: 60_000, limit: 8, standardHeaders: 'draft-7', legacyHeaders: false }));

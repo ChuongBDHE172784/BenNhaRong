@@ -3,6 +3,7 @@ import 'trackasia-gl/dist/trackasia-gl.css';
 import { LocateFixed, Route, Ship, TriangleAlert } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { JourneyStop } from '../../types';
+import { sanitizeTrackAsiaError, type MapLoadState, type SafeMapError } from '../../config/mapDiagnostics';
 import { createTrackAsiaStyleUrl, trackAsiaProvider } from '../../config/mapProvider';
 import { vietnamViewBounds } from '../../data/vietnamSovereigntyLocations';
 import { createVietnamSovereigntyLayer } from './VietnamSovereigntyLayer';
@@ -68,9 +69,12 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
   const markerRecordsRef = useRef<MarkerRecord[]>([]);
   const shipRef = useRef<trackasiagl.Marker | null>(null);
   const animationFrameRef = useRef<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const loadStateRef = useRef<MapLoadState>('initializing');
+  const [loadState, setLoadState] = useState<MapLoadState>('initializing');
+  const [styleLoaded, setStyleLoaded] = useState(false);
+  const [diagnostic, setDiagnostic] = useState<SafeMapError | null>(null);
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const debugEnabled = new URLSearchParams(window.location.search).get('mapDebug') === '1';
 
   useEffect(() => {
     onSelectRef.current = onSelect;
@@ -94,15 +98,37 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
     map.addControl(new trackasiagl.NavigationControl({ showCompass: false, showZoom: true }), 'top-right');
 
     let removeSovereigntyLayer: () => void = () => undefined;
-    const handleError = () => {
-      setLoading(false);
-      setError('Không thể tải bản đồ TrackAsia. Hãy kiểm tra API key, giới hạn tên miền và kết nối mạng.');
+    let disposed = false;
+    const transition = (next: MapLoadState) => {
+      if (disposed) return;
+      loadStateRef.current = next;
+      setLoadState(next);
+    };
+    const handleError = (event: unknown) => {
+      const safeError = sanitizeTrackAsiaError(event, apiKey);
+      setDiagnostic(safeError);
+      if (debugEnabled) console.warn('[TrackAsia diagnostic]', safeError);
+
+      if (safeError.type === 'style' && map.isStyleLoaded() !== true) {
+        transition('failed');
+        return;
+      }
+      if (loadStateRef.current === 'ready' || loadStateRef.current === 'degraded') transition('degraded');
+    };
+    const handleDataLoading = (event: { dataType?: string }) => {
+      if (loadStateRef.current === 'ready' || loadStateRef.current === 'degraded') return;
+      transition(event.dataType === 'source' ? 'loading-sources' : 'loading-style');
     };
 
     map.on('error', handleError);
+    map.on('dataloading', handleDataLoading);
     map.on('load', () => {
-      setLoading(false);
-      setError('');
+      const hasLoadedStyle = map.isStyleLoaded() === true;
+      setStyleLoaded(hasLoadedStyle);
+      if (!hasLoadedStyle) {
+        transition('loading-style');
+        return;
+      }
       const fullRoute = coordinatesFor(stops);
       const initialRoute = reducedMotion ? fullRoute : [fullRoute[0], fullRoute[0]];
 
@@ -137,6 +163,8 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
         .addTo(map);
 
       fitJourney(map, stops, reducedMotion);
+      transition('ready');
+      setDiagnostic(null);
 
       if (reducedMotion) return;
       const source = map.getSource(routeSourceId) as trackasiagl.GeoJSONSource;
@@ -159,8 +187,40 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
       };
       animationFrameRef.current = requestAnimationFrame(drawRoute);
     });
+    map.on('idle', () => {
+      const hasLoadedStyle = map.isStyleLoaded() === true;
+      setStyleLoaded(hasLoadedStyle);
+      if (hasLoadedStyle && map.areTilesLoaded()) {
+        transition('ready');
+        setDiagnostic(null);
+      }
+    });
+
+    const loadingTimeout = window.setTimeout(() => {
+      if (loadStateRef.current === 'ready' || loadStateRef.current === 'degraded') return;
+      const hasLoadedStyle = map.isStyleLoaded() === true;
+      const baseSourceIds = hasLoadedStyle
+        ? Object.keys(map.getStyle().sources || {}).filter((id) => id !== routeSourceId)
+        : [];
+      const hasLoadedBaseSource = baseSourceIds.some((id) => {
+        try { return map.isSourceLoaded(id); } catch { return false; }
+      });
+      if (hasLoadedStyle && hasLoadedBaseSource && map.areTilesLoaded()) {
+        transition('ready');
+        setDiagnostic(null);
+        return;
+      }
+      setStyleLoaded(hasLoadedStyle);
+      setDiagnostic((current) => current ?? sanitizeTrackAsiaError({
+        resourceType: hasLoadedStyle ? 'Source' : 'Style',
+        error: { message: 'TrackAsia map loading timed out after 15 seconds' }
+      }));
+      transition('failed');
+    }, 15_000);
 
     return () => {
+      disposed = true;
+      window.clearTimeout(loadingTimeout);
       if (animationFrameRef.current !== null) cancelAnimationFrame(animationFrameRef.current);
       markerRecordsRef.current.forEach(({ marker }) => marker.remove());
       markerRecordsRef.current = [];
@@ -170,7 +230,7 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
       map.remove();
       mapRef.current = null;
     };
-  }, [apiKey, reducedMotion, stops]);
+  }, [apiKey, debugEnabled, reducedMotion, stops]);
 
   useEffect(() => {
     markerRecordsRef.current.forEach(({ id, element }) => {
@@ -191,11 +251,24 @@ export default function InteractiveJourneyMap({ stops, activeId, visitedIds, api
   }
 
   return (
-    <section className="interactive-map-shell" aria-label="Bản đồ tương tác hành trình lịch sử" data-reduced-motion={reducedMotion ? 'true' : 'false'}>
+    <section className="interactive-map-shell" aria-label="Bản đồ tương tác hành trình lịch sử" data-map-state={loadState} data-reduced-motion={reducedMotion ? 'true' : 'false'}>
       <div className="interactive-map-stage">
         <div ref={containerRef} className="interactive-map-canvas" data-testid="interactive-journey-map"/>
-        {loading && <div className="journey-map-status" role="status"><span className="map-loader"/>Đang tải bản đồ TrackAsia…</div>}
-        {error && <div className="journey-map-error" role="alert"><TriangleAlert/><span>{error}</span></div>}
+        {['initializing', 'loading-style', 'loading-sources'].includes(loadState) && <div className="journey-map-status" role="status"><span className="map-loader"/>Đang tải bản đồ TrackAsia…</div>}
+        {loadState === 'failed' && <div className="journey-map-error" role="alert"><TriangleAlert/><span>Không thể tải bản đồ TrackAsia. Hãy kiểm tra API key, giới hạn tên miền và kết nối mạng.</span></div>}
+        {loadState === 'degraded' && diagnostic && <div className="journey-map-warning" role="status"><TriangleAlert/><span>Bản đồ nền tải chưa đầy đủ ({diagnostic.type}{diagnostic.host ? ` · ${diagnostic.host}` : ''}).</span></div>}
+        {debugEnabled && <aside className="journey-map-debug" aria-label="TrackAsia map diagnostics" data-testid="map-debug-panel">
+          <strong>TrackAsia debug</strong>
+          <dl>
+            <div><dt>State</dt><dd>{loadState}</dd></div>
+            <div><dt>Style loaded</dt><dd>{String(styleLoaded)}</dd></div>
+            <div><dt>Origin</dt><dd>{window.location.origin}</dd></div>
+            <div><dt>Resource</dt><dd>{diagnostic?.type ?? 'none'}</dd></div>
+            <div><dt>Host</dt><dd>{diagnostic?.host ?? 'none'}</dd></div>
+            <div><dt>HTTP</dt><dd>{diagnostic?.status ?? 'none'}</dd></div>
+            <div><dt>CSP</dt><dd>{diagnostic?.cspSuggestion ?? 'none'}</dd></div>
+          </dl>
+        </aside>}
         <div className="journey-map-actions" aria-label="Điều khiển góc nhìn bản đồ">
           <button type="button" onClick={() => mapRef.current && fitJourney(mapRef.current, stops, reducedMotion)}><Route/>Xem toàn bộ hành trình</button>
           <button type="button" onClick={() => mapRef.current?.fitBounds(vietnamViewBounds, { padding: 46, maxZoom: 5.2, duration: reducedMotion ? 0 : 900 })}><LocateFixed/>Về Việt Nam</button>

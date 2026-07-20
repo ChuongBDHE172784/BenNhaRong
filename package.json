@@ -10,6 +10,7 @@
     "type-check": "npm run typecheck",
     "lint": "npm run lint -w server && npm run lint -w client",
     "test": "npm run test -w server && npm run test -w client",
+    "inspect:trackasia": "node --env-file=client/.env scripts/inspect-trackasia-style.mjs",
     "seed": "npm run seed -w server",
     "start": "npm run start -w server"
   },

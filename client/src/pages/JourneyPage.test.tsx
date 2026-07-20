@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import '@testing-library/jest-dom/vitest';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
@@ -22,21 +22,49 @@ vi.mock('trackasia-gl', () => {
   class MockMap {
     container: HTMLElement;
     source = new MockSource(null);
-    shouldError: boolean;
+    scenario: 'normal' | 'fatal' | 'transient' | 'late-tile' | 'late-sprite' | 'timeout';
+    handlers = new Map<string, (event?: unknown) => void>();
     constructor(options: { container: HTMLElement; style: string }) {
       this.container = options.container;
-      this.shouldError = options.style.includes('invalid-ui-key');
+      this.scenario = options.style.includes('invalid-ui-key') ? 'fatal'
+        : options.style.includes('transient-ui-key') ? 'transient'
+          : options.style.includes('late-tile-error-key') ? 'late-tile'
+            : options.style.includes('late-sprite-error-key') ? 'late-sprite'
+              : options.style.includes('timeout-ui-key') ? 'timeout'
+                : 'normal';
     }
     addControl() { return this; }
-    on(event: string, callback: () => void) {
-      if (event === 'load' && !this.shouldError) queueMicrotask(callback);
-      if (event === 'error' && this.shouldError) queueMicrotask(callback);
+    on(event: string, callback: (event?: unknown) => void) {
+      this.handlers.set(event, callback);
+      if (event === 'error' && (this.scenario === 'fatal' || this.scenario === 'transient')) {
+        queueMicrotask(() => callback({
+          resourceType: 'Style',
+          error: { status: 403, url: 'https://maps.track-asia.com/styles/v2/streets.json?key=redacted-test-key', message: 'HTTP status 403 while loading style' }
+        }));
+      }
+      if (event === 'load' && this.scenario !== 'fatal' && this.scenario !== 'timeout') {
+        queueMicrotask(() => {
+          callback();
+          if (this.scenario === 'late-tile') queueMicrotask(() => this.handlers.get('error')?.({
+            resourceType: 'Tile',
+            error: { status: 403, url: 'https://tiles.track-asia.com/2/3/1.pbf?key=late-tile-error-key', message: 'HTTP status 403 while loading tile' }
+          }));
+          if (this.scenario === 'late-sprite') queueMicrotask(() => this.handlers.get('error')?.({
+            resourceType: 'SpriteImage',
+            error: { status: 404, url: 'https://maps.track-asia.com/mapstyle/sprite.png?key=late-sprite-error-key', message: 'HTTP status 404 while loading sprite' }
+          }));
+        });
+      }
       return this;
     }
     addSource(_id: string, source: { data: unknown }) { this.source = new MockSource(source.data); return this; }
     addLayer() { return this; }
     getSource() { return this.source; }
+    getStyle() { return { sources: { composite: {} } }; }
     getZoom() { return 2; }
+    isSourceLoaded() { return this.scenario !== 'timeout'; }
+    isStyleLoaded() { return this.scenario !== 'fatal' && this.scenario !== 'timeout'; }
+    areTilesLoaded() { return this.scenario !== 'timeout'; }
     fitBounds() { return this; }
     flyTo() { return this; }
     remove() { this.container.replaceChildren(); }
@@ -130,6 +158,8 @@ describe('bản đồ hành trình TrackAsia', () => {
 
   afterEach(() => {
     cleanup();
+    vi.useRealTimers();
+    window.history.replaceState({}, '', '/');
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
   });
@@ -187,6 +217,49 @@ describe('bản đồ hành trình TrackAsia', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Không thể tải bản đồ TrackAsia');
     expect(screen.getByTestId('interactive-journey-map')).toBeInTheDocument();
     expect(screen.queryByTestId('sovereignty-map')).not.toBeInTheDocument();
+  });
+
+  it('map load thành công sau lỗi tạm thời sẽ xóa error banner', async () => {
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'transient-ui-key');
+    renderJourney();
+    const map = await screen.findByLabelText('Bản đồ tương tác hành trình lịch sử');
+    await waitFor(() => expect(map).toHaveAttribute('data-map-state', 'ready'));
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Bản đồ nền tải chưa đầy đủ/)).not.toBeInTheDocument();
+  });
+
+  it('lỗi tile phụ sau khi ready chỉ chuyển degraded và không che bản đồ', async () => {
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'late-tile-error-key');
+    renderJourney();
+    const warning = await screen.findByText(/Bản đồ nền tải chưa đầy đủ \(tile · tiles\.track-asia\.com\)/);
+    expect(warning.closest('.journey-map-warning')).toBeInTheDocument();
+    expect(screen.getByLabelText('Bản đồ tương tác hành trình lịch sử')).toHaveAttribute('data-map-state', 'degraded');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
+  it('chỉ chuyển failed sau timeout nếu style không tải', async () => {
+    vi.useFakeTimers();
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'timeout-ui-key');
+    renderJourney();
+    await act(async () => { await Promise.resolve(); await Promise.resolve(); });
+    expect(screen.getByTestId('interactive-journey-map')).toBeInTheDocument();
+    act(() => vi.advanceTimersByTime(15_000));
+    expect(screen.getByRole('alert')).toHaveTextContent('Không thể tải bản đồ TrackAsia');
+    expect(screen.getByLabelText('Bản đồ tương tác hành trình lịch sử')).toHaveAttribute('data-map-state', 'failed');
+  });
+
+  it('mapDebug chỉ hiển thị diagnostic đã redact', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    window.history.replaceState({}, '', '/journey?mapDebug=1');
+    vi.stubEnv('VITE_TRACKASIA_API_KEY', 'late-sprite-error-key');
+    renderJourney();
+    const panel = await screen.findByTestId('map-debug-panel');
+    await waitFor(() => expect(panel).toHaveTextContent('degraded'));
+    expect(panel).toHaveTextContent('maps.track-asia.com');
+    expect(panel).not.toHaveTextContent('late-sprite-error-key');
+    expect(panel.textContent).not.toContain('?key=');
+    expect(JSON.stringify(warn.mock.calls)).not.toContain('late-sprite-error-key');
+    warn.mockRestore();
   });
 
   it('không chứa URL nền cũ hoặc nhà cung cấp ngoài danh sách cho phép', () => {
