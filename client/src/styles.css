@@ -12,10 +12,16 @@
 }
 
 :root {
-  font-family: "Be Vietnam Pro", sans-serif;
+  --font-sans: "Be Vietnam Pro", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: "Cormorant Garamond", "Times New Roman", Georgia, serif;
+  font-family: var(--font-sans);
+  font-kerning: normal;
   color: #cbd5e1;
   background: #02090b;
   font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   --ink: #cbd5e1;
   --ocean: #0a1f24;
   --deep: #030c0e;
@@ -64,6 +70,7 @@ body {
   min-width: 320px;
   background: var(--deep);
   color: var(--ink);
+  font-weight: 400;
   line-height: 1.65;
   overflow-x: hidden;
 }
@@ -147,7 +154,7 @@ select:focus-visible {
   color: var(--brass);
 }
 .brand b {
-  font-family: Lora, serif;
+  font-family: var(--font-display);
   font-size: 13px;
   letter-spacing: 0.12em;
 }
@@ -283,9 +290,7 @@ footer > div svg {
   color: var(--brass);
 }
 footer h2 {
-  font:
-    600 22px Lora,
-    serif;
+  font: 600 22px var(--font-display);
   color: #f1e5ce;
   margin: 12px 0 2px;
 }
@@ -388,9 +393,7 @@ footer > small {
   letter-spacing: 0.23em;
 }
 .section-title h1 {
-  font:
-    500 clamp(36px, 5vw, 70px) / 1.05 Lora,
-    serif;
+  font: 600 clamp(36px, 5vw, 70px) / 1.05 var(--font-display);
   margin: 12px 0 18px;
   color: var(--ivory);
 }
@@ -464,9 +467,7 @@ footer > small {
   display: grid;
   place-items: center;
   color: rgba(238, 228, 206, 0.65);
-  font:
-    600 15px Lora,
-    serif;
+  font: 600 15px var(--font-display);
   letter-spacing: 0.22em;
 }
 .fallback-mark:before {
@@ -671,9 +672,7 @@ footer > small {
   color: #f5ead5;
 }
 .hero-copy h1 {
-  font:
-    500 clamp(64px, 10vw, 150px) / 0.82 Lora,
-    serif;
+  font: 600 clamp(64px, 10vw, 150px) / 0.86 var(--font-display);
   letter-spacing: -0.055em;
   margin: 24px 0;
   text-shadow: 0 8px 35px rgba(0, 0, 0, 0.38);
@@ -685,9 +684,7 @@ footer > small {
   margin-bottom: 14px;
 }
 .hero-copy p {
-  font:
-    400 clamp(15px, 1.6vw, 21px) Lora,
-    serif;
+  font: 500 clamp(17px, 1.7vw, 23px) / 1.45 var(--font-display);
   margin: 0 0 30px;
 }
 .scroll-cue {
@@ -732,7 +729,7 @@ footer > small {
   position: absolute;
   right: 5vw;
   top: 7vh;
-  font: 500 20vw/0.8 Lora;
+  font: 600 20vw/0.8 var(--font-display);
   color: rgba(198, 161, 91, 0.07);
 }
 .scene-port {
@@ -770,7 +767,7 @@ footer > small {
   z-index: 2;
 }
 .story h2 {
-  font: 500 clamp(42px, 6vw, 82px) / 1.05 Lora;
+  font: 600 clamp(42px, 6vw, 82px) / 1.05 var(--font-display);
   margin: 16px 0 25px;
 }
 .story p {
@@ -805,7 +802,7 @@ footer > small {
   align-items: center;
 }
 .date-monument {
-  font-family: Lora;
+  font-family: var(--font-display);
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -953,12 +950,12 @@ footer > small {
   background: #c2b292;
 }
 .chapter span {
-  font: 500 15px Lora;
+  font: 600 15px var(--font-display);
   border-bottom: 1px solid;
   padding-bottom: 15px;
 }
 .chapter h3 {
-  font: 500 clamp(30px, 4vw, 54px) Lora;
+  font: 600 clamp(30px, 4vw, 54px) var(--font-display);
   margin: 28px 0 10px;
 }
 .compare-scene {
@@ -995,7 +992,7 @@ footer > small {
   position: absolute;
   bottom: 25px;
   left: 30px;
-  font: 500 18px Lora;
+  font: 600 18px var(--font-display);
   letter-spacing: 0.15em;
   color: #fff;
 }
@@ -1062,11 +1059,11 @@ footer > small {
   color: var(--brass);
 }
 .final-copy > p {
-  font: 400 22px Lora;
+  font: 500 22px var(--font-display);
   margin: 24px 0 2px;
 }
 .final-copy h2 {
-  font: 500 clamp(48px, 7vw, 98px) / 1 Lora;
+  font: 600 clamp(48px, 7vw, 98px) / 1 var(--font-display);
   max-width: 950px;
   margin: 5px 0 40px;
 }
@@ -1100,7 +1097,7 @@ footer > small {
   position: relative;
 }
 .completion-ring b {
-  font: 500 25px Lora;
+  font: 600 25px var(--font-display);
 }
 .completion-ring span {
   font-size: 9px;
@@ -1153,7 +1150,7 @@ footer > small {
 }
 .stop-list button > span {
   color: var(--brass);
-  font: 500 13px Lora;
+  font: 600 13px var(--font-display);
 }
 .stop-list b,
 .stop-list small {
@@ -1202,7 +1199,7 @@ footer > small {
   line-height: 1.5;
 }
 .map-configuration-notice strong {
-  font: 600 14px Lora, serif;
+  font: 600 14px var(--font-display);
 }
 .map-configuration-notice code {
   color: #f1c66f;
@@ -1225,7 +1222,7 @@ footer > small {
   padding: 28px;
 }
 .stop-panel h2 {
-  font: 500 30px/1.1 Lora;
+  font: 600 30px/1.1 var(--font-display);
   margin: 10px 0 18px;
 }
 .stop-panel p {
@@ -1236,7 +1233,7 @@ footer > small {
   border-left: 2px solid var(--brass);
   margin: 20px 0;
   padding: 4px 0 4px 15px;
-  font: italic 13px Lora;
+  font: italic 500 14px/1.6 var(--font-display);
   color: #decba8;
 }
 .stop-panel small {
@@ -1326,7 +1323,7 @@ footer > small {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .timeline-node > span {
-  font: 500 14px Lora;
+  font: 600 14px var(--font-display);
   color: var(--brass);
 }
 .timeline-node > i {
@@ -1347,7 +1344,7 @@ footer > small {
   box-shadow: 0 0 12px var(--brass);
 }
 .timeline-node h3 {
-  font: 500 21px/1.2 Lora;
+  font: 600 21px/1.2 var(--font-display);
   margin: 22px 0 12px;
   color: var(--ivory);
 }
@@ -1393,7 +1390,7 @@ footer > small {
   padding: 65px;
 }
 .timeline-detail h2 {
-  font: 500 clamp(32px, 4vw, 54px) / 1.1 Lora;
+  font: 600 clamp(32px, 4vw, 54px) / 1.1 var(--font-display);
   color: var(--brass);
   margin: 12px 0 25px;
 }
@@ -1560,7 +1557,7 @@ footer > small {
   cursor: pointer;
   display: grid;
   place-items: center;
-  font-family: Lora, serif;
+  font-family: var(--font-display);
   font-weight: 700;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 0 0 var(--brass-glow);
@@ -1637,7 +1634,7 @@ footer > small {
   color: var(--brass);
 }
 .architecture-info h2 {
-  font: 500 32px Lora;
+  font: 600 32px var(--font-display);
   color: var(--brass);
   margin: 8px 0;
 }
@@ -1761,7 +1758,7 @@ footer > small {
   margin-top: 4px;
 }
 .artifact-meta h2 {
-  font: 500 21px/1.2 Lora;
+  font: 600 21px/1.2 var(--font-display);
   color: var(--ivory);
   margin: 10px 0;
 }
@@ -1826,7 +1823,7 @@ footer > small {
   box-shadow: var(--shadow-premium);
 }
 .modal-panel > h2 {
-  font: 500 clamp(28px, 4vw, 46px) Lora;
+  font: 600 clamp(28px, 4vw, 46px) var(--font-display);
   color: var(--brass);
   margin: 0 50px 26px 0;
 }
@@ -1931,7 +1928,7 @@ footer > small {
 }
 .quiz-section > header h2,
 .game-section > header h2 {
-  font: 500 36px Lora;
+  font: 600 36px var(--font-display);
   color: var(--brass);
   margin: 8px 0;
 }
@@ -1947,7 +1944,7 @@ footer > small {
   border-bottom: 1px solid rgba(217, 179, 108, 0.15);
 }
 .question h3 {
-  font: 500 21px/1.5 Lora;
+  font: 600 21px/1.5 var(--font-display);
   display: flex;
   gap: 17px;
   color: var(--ivory);
@@ -2051,7 +2048,7 @@ footer > small {
   width: 30px;
 }
 .score-seal strong {
-  font: 600 38px Lora;
+  font: 600 38px var(--font-display);
 }
 .score-seal span {
   font-size: 9px;
@@ -2243,13 +2240,13 @@ footer > small {
   color: var(--brass);
 }
 .passport-cover h2 {
-  font: 500 30px Lora;
+  font: 600 30px var(--font-display);
   letter-spacing: 0.06em;
   margin: 10px 0;
   color: var(--ivory);
 }
 .passport-cover p {
-  font: italic 14px Lora;
+  font: italic 500 15px/1.5 var(--font-display);
   color: var(--muted);
 }
 .passport-progress {
@@ -2270,7 +2267,7 @@ footer > small {
   box-shadow: 0 0 0 1px var(--brass);
 }
 .passport-progress b {
-  font: 500 26px Lora;
+  font: 600 26px var(--font-display);
   color: var(--brass);
 }
 .passport-progress > span {
@@ -2323,7 +2320,7 @@ footer > small {
   width: 27px;
 }
 .passport-stamp b {
-  font: 600 13px Lora;
+  font: 600 13px var(--font-display);
   margin: 5px 0 2px;
 }
 .passport-stamp small {
@@ -2365,7 +2362,7 @@ footer > small {
   color: var(--brass);
 }
 .passport-stats b {
-  font: 500 20px Lora;
+  font: 600 20px var(--font-display);
   color: var(--brass);
 }
 .passport-stats span {
@@ -2406,7 +2403,7 @@ footer > small {
   color: var(--brass);
 }
 .reflection-form h2 {
-  font: 500 28px Lora;
+  font: 600 28px var(--font-display);
   color: var(--brass);
   margin-bottom: 24px;
 }
@@ -2496,7 +2493,7 @@ footer > small {
   color: var(--brass);
 }
 .reflection-list h2 {
-  font: 500 28px Lora;
+  font: 600 28px var(--font-display);
   color: var(--brass);
   margin: 0;
 }
@@ -2529,7 +2526,7 @@ footer > small {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font: 500 20px Lora;
+  font: 600 20px var(--font-display);
 }
 .reflection-list article header {
   display: flex;
@@ -2546,7 +2543,7 @@ footer > small {
   width: 12px;
 }
 .reflection-list article p {
-  font: italic 15px/1.7 Lora;
+  font: italic 500 16px/1.7 var(--font-display);
   color: var(--ink);
   margin: 8px 0;
 }
@@ -2609,7 +2606,7 @@ footer > small {
   color: var(--red);
 }
 .source-notes h2 {
-  font: 500 20px Lora;
+  font: 600 20px var(--font-display);
 }
 .source-notes p {
   font-size: 11px;
@@ -2627,7 +2624,7 @@ footer > small {
   padding: 30px 0;
 }
 .source-list li > span {
-  font: 500 28px Lora;
+  font: 600 28px var(--font-display);
   color: #aa9875;
 }
 .source-list small {
@@ -2636,7 +2633,7 @@ footer > small {
   letter-spacing: 0.12em;
 }
 .source-list h2 {
-  font: 500 23px Lora;
+  font: 600 23px var(--font-display);
   margin: 5px 0;
 }
 .source-list p {
@@ -2675,7 +2672,7 @@ footer > small {
   color: var(--brass);
 }
 .not-found h1 {
-  font: 500 clamp(40px, 6vw, 75px) Lora;
+  font: 600 clamp(40px, 6vw, 75px) var(--font-display);
   margin: 14px;
 }
 .not-found p {
@@ -2697,7 +2694,7 @@ footer > small {
 }
 .lost-orbit span {
   position: absolute;
-  font: 500 18px Lora;
+  font: 600 18px var(--font-display);
 }
 
 @media (max-width: 1200px) {

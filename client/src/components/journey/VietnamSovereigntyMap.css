@@ -43,17 +43,13 @@
 }
 .region-labels text {
   fill: #ead7ad;
-  font:
-    600 12px "Be Vietnam Pro",
-    sans-serif;
+  font: 600 12px var(--font-sans);
   letter-spacing: 3px;
   opacity: 0.6;
 }
 .region-labels .sea-label {
   fill: #efcf87;
-  font:
-    600 15px Lora,
-    serif;
+  font: 600 15px var(--font-display);
   letter-spacing: 4px;
   opacity: 0.9;
 }
@@ -73,9 +69,7 @@
 }
 .compass-rose text {
   fill: #d3b978;
-  font:
-    600 12px Lora,
-    serif;
+  font: 600 12px var(--font-display);
   text-anchor: middle;
 }
 .route-ghost {
@@ -126,16 +120,12 @@
 .journey-marker .marker-number {
   fill: #10272b;
   text-anchor: middle;
-  font:
-    700 9px "Be Vietnam Pro",
-    sans-serif;
+  font: 700 9px var(--font-sans);
   pointer-events: none;
 }
 .journey-marker .marker-label {
   fill: #f0dfbe;
-  font:
-    600 11px "Be Vietnam Pro",
-    sans-serif;
+  font: 600 11px var(--font-sans);
   paint-order: stroke;
   stroke: #071c21;
   stroke-width: 4;
@@ -174,9 +164,7 @@
 }
 .island-label {
   fill: #f5dfb4;
-  font:
-    600 10px "Be Vietnam Pro",
-    sans-serif;
+  font: 600 10px var(--font-sans);
   paint-order: stroke;
   stroke: #071c21;
   stroke-width: 4;
@@ -195,9 +183,7 @@
 }
 .island-tooltip text {
   fill: #183439;
-  font:
-    500 10px "Be Vietnam Pro",
-    sans-serif;
+  font: 500 10px var(--font-sans);
 }
 .map-cartouche rect {
   fill: rgba(7, 28, 33, 0.82);
@@ -206,16 +192,12 @@
 }
 .map-cartouche text {
   fill: #ebd9b4;
-  font:
-    600 11px Lora,
-    serif;
+  font: 600 11px var(--font-display);
   letter-spacing: 2px;
 }
 .map-cartouche .cartouche-sub {
   fill: #c6a15b;
-  font:
-    500 9px "Be Vietnam Pro",
-    sans-serif;
+  font: 500 9px var(--font-sans);
   letter-spacing: 2.5px;
 }
 .map-legend {
@@ -264,9 +246,7 @@
   transform: translateX(-50%);
   margin: 0;
   color: #f2d79d;
-  font:
-    600 11px Lora,
-    serif;
+  font: 600 11px var(--font-display);
   letter-spacing: 0.06em;
   white-space: nowrap;
   text-shadow: 0 2px 4px #031012;

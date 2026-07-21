@@ -90,7 +90,7 @@
   background: rgba(8, 31, 36, 0.94);
   color: #f0dfbd;
   box-shadow: 0 12px 28px rgba(1, 10, 12, 0.28);
-  font: 600 10px "Be Vietnam Pro", sans-serif;
+  font: 600 10px var(--font-sans);
   letter-spacing: 0.04em;
   cursor: pointer;
 }
@@ -173,7 +173,7 @@
   background: rgba(3, 18, 22, 0.94);
   color: #d9eef0;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
-  font: 500 10px "Be Vietnam Pro", sans-serif;
+  font: 500 10px var(--font-sans);
   overflow-wrap: anywhere;
 }
 
@@ -217,7 +217,7 @@
   background: #081f24;
   color: #f0d495;
   text-align: center;
-  font: 600 11px Lora, serif;
+  font: 600 11px var(--font-display);
   letter-spacing: 0.06em;
 }
 
@@ -239,7 +239,7 @@
   background: #0c292f;
   color: #f4e5c5;
   box-shadow: 0 0 0 5px rgba(11, 39, 45, 0.48), 0 8px 18px rgba(0, 0, 0, 0.42);
-  font: 700 10px "Be Vietnam Pro", sans-serif;
+  font: 700 10px var(--font-sans);
   transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
@@ -326,12 +326,12 @@
 }
 
 .sovereignty-marker__label strong {
-  font: 600 10px "Be Vietnam Pro", sans-serif;
+  font: 600 10px var(--font-sans);
 }
 
 .sovereignty-marker__label em {
   color: #f0bb62;
-  font: normal 700 9px "Be Vietnam Pro", sans-serif;
+  font: normal 700 9px var(--font-sans);
   letter-spacing: 0.08em;
 }
 
@@ -366,7 +366,7 @@
 
 .sovereignty-popup h3 {
   margin: 0 30px 2px 0;
-  font: 600 18px Lora, serif;
+  font: 600 18px var(--font-display);
 }
 
 .sovereignty-popup strong {
